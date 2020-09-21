@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 //Components
+import Styled from '../../styled/exports'
 import {Button} from './exports';
 
-class DownVote extends Component {
-    state = {
-        active: false,
-        icon: ""
-    }
-
-    render() {
-        return (
-            <Button onHandleClick={this.props.onHandleClick} value="Down Vote" />
-        );
-    }
+const DownVote = (props) => {
+    return (
+        <Styled.Downvote>
+            <Button
+                onHandleClick={props.onHandleClick}
+                value={
+                    <img src={`${process.env.PUBLIC_URL}/images/downvote-claw.png`} alt="" />
+                }
+            />
+        </Styled.Downvote>
+    );
 }
 export default DownVote;

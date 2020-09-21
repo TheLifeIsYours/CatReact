@@ -4,6 +4,8 @@ import { cardItemState } from './cardState'
 import { useRecoilState } from 'recoil';
 
 //Components
+import Styled from '../../styled/exports';
+
 import Image from './image';
 import { Controls } from './controls';
 
@@ -20,10 +22,10 @@ const Card = ({cardData}) => {
     }, [])
 
     return (
-        <div>
+        <Styled.Card>
             <Image url={cardData.url} />
             <Controls id={card.id} />
-        </div>  
+        </Styled.Card>
     );
 }
 

@@ -1,12 +1,25 @@
 import React from 'react'
 
-const Select = ({options}) => {
+const Select = (props) => {
+
+    const handleChange = () => {
+        props.onHandleChange();
+    }
 
     return (
         <select>
             {
-                options.map(value => {
-                    return <option key={value} value={value}>{ value[0].toUpperCase() + value.slice(1) }</option>
+                props.options.map((value, index) => {
+                    return (
+                        <option
+                            key={value} 
+                            value={value} 
+                            onChange={() => {
+                                handleChange();
+                        }}>
+                            { value[0].toUpperCase() + value.slice(1) }
+                        </option>
+                    )
                 })
             }
         </select>

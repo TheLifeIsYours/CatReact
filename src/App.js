@@ -1,9 +1,13 @@
 import React from 'react'
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useRecoilState, atom } from 'recoil';
 
 //Components
+import Styled from './styled/exports'
+
 import Card from './components/cat/card'
+
+import {Header, Footer} from './components/layout/exports'
 import { cardListState } from './components/cat/cardState'
 import { Select } from './components/select/exports'
 import FetchCat from './components/cat/FetchCat';
@@ -29,6 +33,7 @@ const sortByState = new atom({
 	}
 });
 
+
 function App() {
 	const [sortBy, setSortBy] = useRecoilState(sortByState);
 	const {loading, error, data} = useQuery(GET_CARDS)
@@ -40,46 +45,53 @@ function App() {
 	if(error) return <div>Error: {error.message}</div>
 
 	return (
-		<main>
+		<Styled.Wrapper>
+			<Header />
 			<FetchCat />
 
 			<div>
 				<span>Sort by </span>
-				<Select value={sortBy.value} options={sortBy.options}/>
+				<Select value={sortBy.selected} onHandleChange={(event) => {
+					console.log(event);
+					// setSortBy(sortBy.selected)
+				}} options={sortBy.options}/>
 			</div>
-			
-			<div>{cardList}</div>
 
-			{
-				(() => {
-					switch(sortBy.selected) {
-						case(sortBy.options[0]): 
-							return (
-								data.cards.map((cardData) => {
+			<h1>Ordered by {sortBy.selected}</h1>
+			
+			<div>
+				{cardList}
+				{
+					(() => {
+						switch(sortBy.selected) {
+							case(sortBy.options[0]): {
+								return data.cards.map((cardData) => {
 									console.log(cardData);
 									return <Card key={cardData._id} cardData={cardData} />
-								}).sort((card) => {
-									console.log(card);
+								}).sort((card_a, card_b) => {
+									console.log(card_a, card_b);
 								})
-							)
-						case(sortBy.options[1]): 
-							return (
-								data.cards.map((cardData) => {
+							}
+							
+							case(sortBy.options[1]): {
+								return data.cards.map((cardData) => {
 									console.log(cardData);
 									return <Card key={cardData._id} cardData={cardData} />
 								}).reverse()
-							)
-						default:
-							return (
-								data.cards.map((cardData) => {
+							}
+								
+							default: {
+								return data.cards.map((cardData) => {
 									console.log(cardData);
 									return <Card key={cardData._id} cardData={cardData} />
 								}).reverse()
-							)
-					}
-				})()
-			}
-		</main>
+							}
+						}
+					})()
+				}
+			</div>
+			<Footer />
+		</Styled.Wrapper>
 	)
 
 	

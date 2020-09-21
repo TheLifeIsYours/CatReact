@@ -7,6 +7,8 @@ import Card from './card';
 
 import { cardListState } from './cardState';
 
+import Styled from '../../styled/exports'
+
 const ADD_CARD = gql`
 mutation AddCard($url: String!) {
 	insertOneCard(
@@ -25,7 +27,7 @@ const FetchCat = () => {
    
 	//State handling
 	const [cardList, setCardList] = useRecoilState(cardListState);
-	const [addCard, {addedCardData}] = useMutation(ADD_CARD);
+	const [addCard] = useMutation(ADD_CARD);
 
 	const fetchCat = async () => {
 		let catData = await fetch("https://api.thecatapi.com/v1/images/search?size=full");
@@ -42,7 +44,9 @@ const FetchCat = () => {
 	}
 
     return (
-        <Button onHandleClick={fetchCat} value="Fetch Cat" />
+        <Styled.FetchCat>
+            <Button onHandleClick={fetchCat} value="Fetch Cat" />
+        </Styled.FetchCat>
     )
 }
 

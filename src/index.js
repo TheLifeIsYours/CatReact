@@ -9,7 +9,6 @@ import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from './graphql/link'
 
 import App from './App';
-import {Header, Footer} from './components/layout/exports'
 import './App.css';
 import './index.css';
 
@@ -20,9 +19,7 @@ ReactDOM.render(
 		<ErrorBoundary>
 			<RecoilRoot>
 				<ApolloProvider client={apolloClient}>
-					<Header />
 					<App />
-					<Footer />
 				</ApolloProvider>
 			</RecoilRoot>
 		</ErrorBoundary>

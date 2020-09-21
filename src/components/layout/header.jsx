@@ -1,12 +1,13 @@
 import React from 'react'
 
+import Styled from '../../styled/exports'
+
 const Header = () => {
     return (
-        <header>
-            <h1>
-                Cat React - Vote for your favorite kitty <span role="img" aria-label="Smiling cat with heart-eyes">😻</span>
-            </h1>
-        </header>
+        <Styled.Header>
+            <img id="desktop" src={process.env.PUBLIC_URL + "/images/cat-react-logo-emoji-DT.png"} />
+            <img id="mobile" src={process.env.PUBLIC_URL + "/images/cat-react-logo-emoji-mobile.png"} />
+        </Styled.Header>
     )
 }
 

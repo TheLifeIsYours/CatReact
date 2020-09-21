@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 //Components
+import Styled from '../../styled/exports'
 import {Button} from './exports';
 
 class Button_UpVote extends Component {
@@ -11,7 +12,14 @@ class Button_UpVote extends Component {
 
     render() {
         return (
-            <Button onHandleClick={this.props.onHandleClick} value="Up Vote" />
+            <Styled.Upvote>
+                <Button
+                    onHandleClick={this.props.onHandleClick}
+                    value={
+                        <img src={`${process.env.PUBLIC_URL}/images/upvote-claw.png`} alt="" />
+                    }
+                />
+            </Styled.Upvote>
         );
     }
 }

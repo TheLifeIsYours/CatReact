@@ -1,32 +1,14 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 
-import './style/button.module.css'
+const Button = (props) => {
 
-class Button extends Component {
-    state = {
-        active: false
+    const handleClick = () => {
+        props.onHandleClick();
     }
 
-    handleClick = () => {
-        this.props.onHandleClick();
-    }
-
-    toggleActive = () => {
-        this.setState({active: !this.state.active});
-    }
-
-    render() {
-        return (
-            <button
-                onClick={() => {
-                    this.toggleActive();
-                    this.handleClick();
-                }}>
-                
-                {this.props.value}
-            </button>
-        );
-    }
+    return (
+        <div onClick={handleClick}>{props.value}</div>
+    );
 }
 
 export default Button;
