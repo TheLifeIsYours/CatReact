@@ -132,6 +132,29 @@ const Points = styled.div`
     overflow: hidden;
 `
 
+const Loading = styled.div`
+    color: #fff;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2em;
+
+    & img {
+        width: 15rem;
+        margin: 2rem;
+        animation: rotate infinite forwards linear 2s;
+    }
+
+    @keyframes rotate {
+        from{transform:rotate(0deg)}
+        to{transform:rotate(360deg)}
+    }
+`
+
 const StyledComponents = styled(styled.div``)``;
 
 const Styled = ({children, ...rest}) => (
@@ -163,5 +186,7 @@ Styled.Upvote = merge(Button, ControlButton, Upvote)
 Styled.Downvote = merge(Button, ControlButton, Downvote)
 
 Styled.Points = Points;
+
+Styled.Loading = Loading;
 
 export default Styled

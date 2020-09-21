@@ -22,6 +22,10 @@ mutation AddCard($url: String!) {
 		points
 	}
 }`;
+    
+const buttonValues = ["Fetch Cat", "Pspspsps", "Put out a bowl of milk"];
+
+const getRandomButtonValue = () => (buttonValues[Math.floor(Math.random() * buttonValues.length)])
 
 const FetchCat = () => {
    
@@ -41,11 +45,11 @@ const FetchCat = () => {
 
 			setCardList([newCard, ...cardList]);
 		}).catch(console.error)
-	}
+    }
 
     return (
         <Styled.FetchCat>
-            <Button onHandleClick={fetchCat} value="Fetch Cat" />
+            <Button onHandleClick={fetchCat} value={getRandomButtonValue()} />
         </Styled.FetchCat>
     )
 }

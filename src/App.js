@@ -7,7 +7,7 @@ import Styled from './styled/exports'
 
 import Card from './components/cat/card'
 
-import {Header, Footer} from './components/layout/exports'
+import {Header, Footer, Loading} from './components/layout/exports'
 import { cardListState } from './components/cat/cardState'
 import { Select } from './components/select/exports'
 import FetchCat from './components/cat/FetchCat';
@@ -41,7 +41,7 @@ function App() {
 	//State handling
 	const [cardList, setCardList] = useRecoilState(cardListState);
 
-	if(loading) return <div>Loading ...</div>
+	if(loading) return <Loading />
 	if(error) return <div>Error: {error.message}</div>
 
 	return (
