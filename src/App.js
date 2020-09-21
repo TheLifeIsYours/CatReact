@@ -49,7 +49,7 @@ function App() {
 			<Header />
 			<FetchCat />
 
-			<div>
+			{/* <div>
 				<span>Sort by </span>
 				<Select value={sortBy.selected} onHandleChange={(event) => {
 					console.log(event);
@@ -57,7 +57,7 @@ function App() {
 				}} options={sortBy.options}/>
 			</div>
 
-			<h1>Ordered by {sortBy.selected}</h1>
+			<h1>Ordered by {sortBy.selected}</h1> */}
 			
 			<div>
 				{cardList}
