@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/CatReact/static/css/main.5f7b9f41.chunk.css",
-    "main.js": "/CatReact/static/js/main.46d32bc3.chunk.js",
-    "main.js.map": "/CatReact/static/js/main.46d32bc3.chunk.js.map",
+    "main.js": "/CatReact/static/js/main.b24ff0c9.chunk.js",
+    "main.js.map": "/CatReact/static/js/main.b24ff0c9.chunk.js.map",
     "runtime-main.js": "/CatReact/static/js/runtime-main.ac722aaa.js",
     "runtime-main.js.map": "/CatReact/static/js/runtime-main.ac722aaa.js.map",
-    "static/js/2.42d9efe3.chunk.js": "/CatReact/static/js/2.42d9efe3.chunk.js",
-    "static/js/2.42d9efe3.chunk.js.map": "/CatReact/static/js/2.42d9efe3.chunk.js.map",
+    "static/js/2.193fef81.chunk.js": "/CatReact/static/js/2.193fef81.chunk.js",
+    "static/js/2.193fef81.chunk.js.map": "/CatReact/static/js/2.193fef81.chunk.js.map",
     "index.html": "/CatReact/index.html",
-    "precache-manifest.da2ddb84c13e4ac08d6ec05b25cda5fe.js": "/CatReact/precache-manifest.da2ddb84c13e4ac08d6ec05b25cda5fe.js",
+    "precache-manifest.5c5b91483f2f648bbb113261605dd93e.js": "/CatReact/precache-manifest.5c5b91483f2f648bbb113261605dd93e.js",
     "service-worker.js": "/CatReact/service-worker.js",
     "static/css/main.5f7b9f41.chunk.css.map": "/CatReact/static/css/main.5f7b9f41.chunk.css.map",
-    "static/js/2.42d9efe3.chunk.js.LICENSE.txt": "/CatReact/static/js/2.42d9efe3.chunk.js.LICENSE.txt"
+    "static/js/2.193fef81.chunk.js.LICENSE.txt": "/CatReact/static/js/2.193fef81.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.ac722aaa.js",
-    "static/js/2.42d9efe3.chunk.js",
+    "static/js/2.193fef81.chunk.js",
     "static/css/main.5f7b9f41.chunk.css",
-    "static/js/main.46d32bc3.chunk.js"
+    "static/js/main.b24ff0c9.chunk.js"
   ]
 }
