@@ -12,7 +12,7 @@ const Wrapper = styled.main`
 
     padding: 30px 50px 30px 50px;
 
-    @media(max-width:680px;) {
+    @media(max-width:680px) {
 	    padding: 30px 25px 30px 25px;
     }
 
