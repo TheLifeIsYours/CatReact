@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
-//Components
-import Image from './image';
-import Controls from './controls';
-
 import { cardItemState } from './cardState'
 import { useRecoilState } from 'recoil';
+
+//Components
+import Image from './image';
+import { Controls } from './controls';
 
 const Card = ({cardData}) => {
     const [card, setCard] = useRecoilState(cardItemState(cardData._id));

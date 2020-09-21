@@ -1,15 +1,24 @@
 import React from 'react'
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 
 import { cardItemState } from './cardState'
 import { useRecoilState } from 'recoil';
+import { ObjectID } from 'mongodb'
 
 //Components
-import {UpVote, DownVote} from '../buttons/buttons'
+import {UpVote, DownVote} from '../buttons/exports'
 import Points from './points'
 
+const GET_ONE_CARD = gql`
+query Card($_id: ObjectId!) {
+    card (query:{_id: $_id}) {
+        _id
+        points
+    }
+}`;
+
 const UPDATE_ONE_CARD = gql`
-mutation ($id: ObjectId!, $points: Int!){
+mutation ($id: ObjectId, $points: Int!){
     updateOneCard(
         query: {_id: $id}
         set: {points: $points}
@@ -18,57 +27,49 @@ mutation ($id: ObjectId!, $points: Int!){
     }
 }`;
 
+const useImperativeQuery = (query) => {
+    const { refetch } = useQuery(query, {skip: true});
+      
+    const imperativelyCallQuery = ({variables}) => {
+      return refetch(variables);
+    }
+      
+    return imperativelyCallQuery;
+}
 
-function Controls({id}) {
-    const [updatePoints, {data}] = useMutation(UPDATE_ONE_CARD);
+export const Controls = ({id}) => {
+    const [updatePoints] = useMutation(UPDATE_ONE_CARD);
+    const getPoints = useImperativeQuery(GET_ONE_CARD);
 
-    const [card, setCard] = useRecoilState(cardItemState(id));
+    const [cardState, setCard] = useRecoilState(cardItemState(id));
 
     const vote = (upvote) => {
-        new Promise((resolve, reject) => {
-            switch(card.vote) {
+        new Promise(async (resolve, reject) => {
+            const {data: {card: {points}}} = await getPoints({variables: {"_id": id}});
+            
+            switch(cardState.vote) {
                 case(0): {
-                    upvote ? 
-                        resolve({points: card.points + 1, vote: 1}) :
-                        resolve({points: card.points - 1, vote: -1});
-                    break;
+                    return resolve(upvote ? {points: points + 1, vote: 1} : {points: points - 1, vote: -1});
                 }
 
                 case(1): {
-                    upvote ?
-                        resolve({points: card.points - 1, vote: 0}) :
-                        resolve({points: card.points - 2, vote: -1});
-                    break;
+                    return resolve(upvote ? {points: points - 1, vote: 0} : {points: points - 2, vote: -1});
                 }
 
                 case(-1): {
-                    upvote ?
-                        resolve({points: card.points + 2, vote: 1}) :
-                        resolve({points: card.points + 1, vote: 0});
-
-                    break;
+                    return resolve(upvote ? {points: points + 2, vote: 1} : {points: points + 1, vote: 0});
                 }
+
                 default: {
-                    reject("Unable to vote");
+                    return reject("Unable to vote");
                 }
             }
         })
         .then(({points, vote}) => {
-            setCard({...card, points, vote});
-            updatePoints({variables: {"id": card.id, "points": points}});
-        }).catch(console.error);
-    }
-
-    const controlStyle = {
-        display: 'flex',
-        flexFlow: 'row',
-        justifyContent: 'space-between',
-        alignSelf: 'center',
-        width: '20em'
-    }
-
-    const pointStyle = {
-        color: ["red", "black", "green"][card.vote + 1]
+            setCard({...cardState, points, vote});
+            updatePoints({variables: {"id": cardState.id, "points": points}});
+        })
+        .catch(console.error);
     }
 
     return (
@@ -76,7 +77,9 @@ function Controls({id}) {
             <UpVote onHandleClick={() => {
                 vote(1);
             }} />
-            <strong style={pointStyle}>{card.points}</strong>
+            
+            <Points id={id} />
+
             <DownVote onHandleClick={() => {
                 vote(0);
             }} />
@@ -84,4 +87,10 @@ function Controls({id}) {
     );
 }
 
-export default Controls;
+const controlStyle = {
+    display: 'flex',
+    flexFlow: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    width: '20em'
+}

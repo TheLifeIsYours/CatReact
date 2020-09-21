@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 //Components
-import Button from './button';
+import {Button} from './exports';
 
 class DownVote extends Component {
     state = {

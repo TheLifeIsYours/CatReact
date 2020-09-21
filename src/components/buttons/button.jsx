@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './style/button.module.css'
+
 class Button extends Component {
     state = {
         active: false

@@ -1,16 +1,10 @@
 import React, { useEffect } from 'react';
 
-import { selectedCardState, selectedCardIdState } from './cardState'
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { cardItemState } from './cardState'
+import { useRecoilValue } from 'recoil';
 
-
-const Points = () => {
-    
-    useEffect(() => {
-        // setSelectedCardState(id)
-    })
-
-    const card = useRecoilValue(selectedCardState) || {};
+const Points = ({id}) => {
+    const card = useRecoilValue(cardItemState(id));
 
     const pointStyle = {
         color: ["red", "black", "green"][card.vote + 1]
