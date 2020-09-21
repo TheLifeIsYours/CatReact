@@ -1,18 +1,30 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
 //Components
 import Image from './image';
 import Controls from './controls';
 
-class Card extends Component {
-    render() {
-        return (
-            <div>
-                <Image src={this.props.url} />
-                <Controls />
-            </div>  
-        );
-    }
+import { cardItemState } from './cardState'
+import { useRecoilState } from 'recoil';
+
+const Card = ({cardData}) => {
+    const [card, setCard] = useRecoilState(cardItemState(cardData._id));
+    
+    useEffect(() => {
+        setCard({...card,
+            id: cardData._id,
+            url: cardData.url,
+            points: cardData.points,
+            vote: 0
+        });
+    }, [])
+
+    return (
+        <div>
+            <Image url={cardData.url} />
+            <Controls id={card.id} />
+        </div>  
+    );
 }
 
 export default Card;

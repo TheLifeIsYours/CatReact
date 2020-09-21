@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
-class Image extends Component {
-
-    imageStyle = {
+const Image = ({url}) => {
+    const imageStyle = {
         height: '20em'
     }
 
-    render() {
-        return (
-            <img style={this.imageStyle} src={this.props.src} alt="" />
-        );
-    }
+    useEffect(() => {
+
+    }, []);
+
+    return (
+        <img style={imageStyle} src={url} alt="" />
+    );
 }
 
 export default Image;

@@ -1,85 +1,65 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { gql, useMutation } from '@apollo/client';
+
+import { cardItemState } from './cardState'
+import { useRecoilState } from 'recoil';
 
 //Components
 import {UpVote, DownVote} from '../buttons/buttons'
 import Points from './points'
 
+const UPDATE_ONE_CARD = gql`
+mutation ($id: ObjectId!, $points: Int!){
+    updateOneCard(
+        query: {_id: $id}
+        set: {points: $points}
+    ) {
+        points
+    }
+}`;
 
-class Controls extends Component {
-    state = {
-        vote: 0,
-        points: 0
+
+function Controls({id}) {
+    const [updatePoints, {data}] = useMutation(UPDATE_ONE_CARD);
+
+    const [card, setCard] = useRecoilState(cardItemState(id));
+
+    const vote = (upvote) => {
+        new Promise((resolve, reject) => {
+            switch(card.vote) {
+                case(0): {
+                    upvote ? 
+                        resolve({points: card.points + 1, vote: 1}) :
+                        resolve({points: card.points - 1, vote: -1});
+                    break;
+                }
+
+                case(1): {
+                    upvote ?
+                        resolve({points: card.points - 1, vote: 0}) :
+                        resolve({points: card.points - 2, vote: -1});
+                    break;
+                }
+
+                case(-1): {
+                    upvote ?
+                        resolve({points: card.points + 2, vote: 1}) :
+                        resolve({points: card.points + 1, vote: 0});
+
+                    break;
+                }
+                default: {
+                    reject("Unable to vote");
+                }
+            }
+        })
+        .then(({points, vote}) => {
+            setCard({...card, points, vote});
+            updatePoints({variables: {"id": card.id, "points": points}});
+        }).catch(console.error);
     }
 
-    upVote = () => {
-        switch(this.state.vote) {
-            case(0): {
-                this.setState((state, props) => ({
-                    points: state.points + 1
-                }));
-
-                this.setState({vote: 1});
-                break;
-            }
-
-            case(1): {
-                this.setState((state, props) => ({
-                    points: state.points - 1
-                }));
-                
-                this.setState({vote: 0});
-                break;
-            }
-
-            case(-1): {
-                this.setState((state, props) => ({
-                    points: state.points + 2
-                }));
-
-                this.setState({vote: 1});
-                break;
-            }
-            default: {
-
-            }
-        }
-    }
-
-    downVote = () => {
-        switch(this.state.vote) {
-            case(0): {
-                this.setState((state, props) => ({
-                    points: state.points - 1
-                }));
-
-                this.setState({vote: -1});
-                break;
-            }
-
-            case(1): {
-                this.setState((state, props) => ({
-                    points: state.points - 2
-                }));
-
-                this.setState({vote: -1});
-                break;
-            }
-
-            case(-1): {
-                this.setState((state, props) => ({
-                    points: state.points + 1
-                }));
-
-                this.setState({vote: 0});
-                break;
-            }
-            default: {
-                
-            }
-        }
-    }
-
-    controlStyle = {
+    const controlStyle = {
         display: 'flex',
         flexFlow: 'row',
         justifyContent: 'space-between',
@@ -87,15 +67,21 @@ class Controls extends Component {
         width: '20em'
     }
 
-    render() {
-        return (
-            <div style={this.controlStyle}>
-                <UpVote onHandleClick={this.upVote} />
-                <Points points={this.state.points} />
-                <DownVote onHandleClick={this.downVote} />
-            </div>
-        );
+    const pointStyle = {
+        color: ["red", "black", "green"][card.vote + 1]
     }
+
+    return (
+        <div style={controlStyle}>
+            <UpVote onHandleClick={() => {
+                vote(1);
+            }} />
+            <strong style={pointStyle}>{card.points}</strong>
+            <DownVote onHandleClick={() => {
+                vote(0);
+            }} />
+        </div>
+    );
 }
 
 export default Controls;
