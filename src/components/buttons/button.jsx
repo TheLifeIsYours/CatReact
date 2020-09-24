@@ -3,7 +3,9 @@ import React, { Fragment } from 'react';
 const Button = (props) => {
 
     const handleClick = () => {
-        props.onHandleClick();
+        if(props.onHandleClick != undefined) {
+            props.onHandleClick()
+        } 
     }
 
     return (

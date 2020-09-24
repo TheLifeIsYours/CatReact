@@ -9,13 +9,18 @@ import Styled from '../../styled/exports';
 const Points = ({id}) => {
     const card = useRecoilValue(cardItemState(id));
 
-    const pointStyle = {
+    const pointStyleColor = {
         color: ["#f10033", "#fff", "#28c120"][card.vote + 1]
+    }
+
+    const pointStyleChar = {
+        transform: "scale(1.5)",
+        color: pointStyleColor.color
     }
 
     return (
         <Styled.Points>
-            <FlipNumbers numberStyle={pointStyle} height={28} width={14} color="" numbers={card.points.toString()} play />
+            <FlipNumbers nonNumberStyle={pointStyleChar} numberStyle={pointStyleColor} height={28} width={14} numbers={card.points.toString()} play />
         </Styled.Points>
     );
 }
