@@ -2,7 +2,6 @@
   "name": "catreact",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://thelifeisyours.github.io/CatReact/",
   "dependencies": {
     "@apollo/client": "^3.2.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -29,8 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "predeploy": "yarn build"
   },
   "eslintConfig": {
     "extends": "react-app"
