@@ -23,7 +23,7 @@ mutation AddCard($url: String!) {
 	}
 }`;
     
-const buttonValues = ["Fetch Cat", "Adopt a Kitten", "Pspspsps", "Put out a bowl of milk", ""];
+const buttonValues = ["Fetch Cat", "Adopt a Kitten", "Pspspsps", "Put out a bowl of milk"];
 
 const getRandomButtonValue = () => (buttonValues[Math.floor(Math.random() * buttonValues.length)])
 
@@ -58,9 +58,12 @@ const FetchCat = () => {
 
 		let catUrl = await getCatUrl();
 
+        console.log(cardList)
+
         cardList.forEach((card) => {
-            console.log();
-            if(card.cardData.url == catUrl) {
+            console.log(card);
+            
+            if (card.props.cardData.url === catUrl) {
                 urlExists = true;
             }
         });
