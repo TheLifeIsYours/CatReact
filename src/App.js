@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { gql, useQuery } from '@apollo/client';
 import { useRecoilState, atom } from 'recoil';
 
@@ -68,6 +68,12 @@ function App() {
 		})
 	}
 
+	useEffect(() => {
+		if(data) {
+			setCardList(data.cardsPaginated);
+		}
+	}, [data]);
+
 	return (<>
 		{loading && <Loading />}
 		{!loading && 
@@ -86,7 +92,6 @@ function App() {
 				<h1>Ordered by {sortBy.selected}</h1> */}
 				{data && data.cardsPaginated &&
 					<div>
-						{cardList}
 						{
 							(() => {
 								switch(sortBy.selected) {
@@ -107,8 +112,7 @@ function App() {
 									}
 										
 									default: {
-										console.log(data);
-										return data.cardsPaginated.map((cardData) => {
+										return cardList.map((cardData) => {
 											console.log(cardData);
 											return <Card key={cardData._id} cardData={cardData} />
 										})

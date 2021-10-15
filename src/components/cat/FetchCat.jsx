@@ -25,7 +25,7 @@ mutation AddCard($url: String!, $timestamp: DateTime!) {
 	}
 }`;
     
-const buttonValues = ["Fetch Cat", "Adopt a Kitten", "Pspspsps", "Put out a bowl of milk"];
+const buttonValues = ["Fetch Cat", "Adopt a Kitten", "Pspspsps", "Put out a bowl of milk", "Pass the nip"];
 
 const getRandomButtonValue = () => (buttonValues[Math.floor(Math.random() * buttonValues.length)])
 
@@ -49,9 +49,7 @@ const FetchCat = () => {
             .then((response) => {
                 const data = response.data.insertOneCard;
     
-                const newCard = <Card key={data._id} cardData={data} />
-    
-                setCardList([newCard, ...cardList]);
+                setCardList([data, ...cardList]);
                 
                 setTimeout(() => {
                     setIsLoading(false);
@@ -62,26 +60,9 @@ const FetchCat = () => {
 
 	const fetchCat = async () => {
         setIsLoading(true);
-
-        let urlExists = false;
-
 		let catUrl = await getCatUrl();
-
-        console.log(cardList)
-
-        cardList.forEach((card) => {
-            console.log(card);
-            
-            if (card.props.cardData.url === catUrl) {
-                urlExists = true;
-            }
-        });
-
-        if(urlExists) {
-           return fetchCat(); 
-        } else {
-            addCatToDb(catUrl);
-        }
+        //if catUrl already exists in cardList, fetch another cat
+        cardList.some(({url}) => url == catUrl) ? fetchCat() : addCatToDb(catUrl);
     }
 
     return (<>
