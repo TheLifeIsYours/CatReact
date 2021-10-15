@@ -155,6 +155,28 @@ const Loading = styled.div`
     }
 `
 
+const LoadingImage = styled.div`
+    color: #fff;
+    width: inherit;
+    display: ${props => props.loading ? 'flex' : 'none'};
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+    transition: all 0.5s ease-in-out;
+
+    & img {
+        width: 5rem;
+        margin: 2rem;
+        animation: rotate infinite forwards linear 2s;
+    }
+
+    @keyframes rotate {
+        from{transform:rotate(0deg)}
+        to{transform:rotate(360deg)}
+    }
+`
+
 const StyledComponents = styled(styled.div``)``;
 
 const Styled = ({children, ...rest}) => (
@@ -188,5 +210,6 @@ Styled.Downvote = merge(Button, ControlButton, Downvote)
 Styled.Points = Points;
 
 Styled.Loading = Loading;
+Styled.LoadingImage = LoadingImage;
 
 export default Styled

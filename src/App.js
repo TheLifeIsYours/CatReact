@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { gql, useQuery } from '@apollo/client';
 import { useRecoilState, atom } from 'recoil';
 
@@ -14,8 +14,8 @@ import FetchCat from './components/cat/FetchCat';
 
 
 const GET_CARDS = gql`
-query GetCards {
-	cards {
+query GetCards($limit: Int, $offset: Int) {
+	cardsPaginated(input: {limit: $limit, offset: $offset}) {
 		_id
 		url
 		points
@@ -35,64 +35,99 @@ const sortByState = new atom({
 
 
 function App() {
-	const [sortBy, setSortBy] = useRecoilState(sortByState);
-	const {loading, error, data} = useQuery(GET_CARDS)
-
 	//State handling
 	const [cardList, setCardList] = useRecoilState(cardListState);
+	const [cardOffset, setCardOffset] = useState(0);
+	const [cardLimit, setCardLimit] = useState(20);
 
-	if(loading) return <Loading />
-	if(error) return <div>Error: {error.message}</div>
+	const [sortBy, setSortBy] = useRecoilState(sortByState);
+	const {loading, data, fetchMore} = useQuery(GET_CARDS, {
+		variables: {
+			limit: cardLimit,
+			offset: cardOffset
+		}
+	});
 
-	return (
-		<Styled.Wrapper>
-			<Header />
-			<FetchCat />
+	const loadMoreCards = () => {
+		setCardOffset(cardOffset + cardLimit);
+		
+		fetchMore({
+			variables: {
+				offset: cardOffset
+			}
+		})
+	}
 
-			{/* <div>
-				<span>Sort by </span>
-				<Select value={sortBy.selected} onHandleChange={(event) => {
-					console.log(event);
-					// setSortBy(sortBy.selected)
-				}} options={sortBy.options}/>
-			</div>
+	const loadFromStart = () => {
+		setCardOffset(0);
 
-			<h1>Ordered by {sortBy.selected}</h1> */}
-			
-			<div>
-				{cardList}
-				{
-					(() => {
-						switch(sortBy.selected) {
-							case(sortBy.options[0]): {
-								return data.cards.map((cardData) => {
-									console.log(cardData);
-									return <Card key={cardData._id} cardData={cardData} />
-								}).sort((card_a, card_b) => {
-									console.log(card_a, card_b);
-								})
-							}
-							
-							case(sortBy.options[1]): {
-								return data.cards.map((cardData) => {
-									console.log(cardData);
-									return <Card key={cardData._id} cardData={cardData} />
-								}).reverse()
-							}
-								
-							default: {
-								return data.cards.map((cardData) => {
-									console.log(cardData);
-									return <Card key={cardData._id} cardData={cardData} />
-								}).reverse()
-							}
+		fetchMore({
+			variables: {
+				offset: 0
+			}
+		})
+	}
+
+	return (<>
+		{loading && <Loading />}
+		{!loading && 
+			<Styled.Wrapper>
+				<Header />
+				<FetchCat />
+
+				{/* <div>
+					<span>Sort by </span>
+					<Select value={sortBy.selected} onHandleChange={(event) => {
+						console.log(event);
+						// setSortBy(sortBy.selected)
+					}} options={sortBy.options}/>
+				</div>
+
+				<h1>Ordered by {sortBy.selected}</h1> */}
+				{data && data.cardsPaginated &&
+					<div>
+						{cardList}
+						{
+							(() => {
+								switch(sortBy.selected) {
+									case(sortBy.options[0]): {
+										return data.cardsPaginated.map((cardData) => {
+											console.log(cardData);
+											return <Card key={cardData._id} cardData={cardData} />
+										}).sort((card_a, card_b) => {
+											console.log(card_a, card_b);
+										})
+									}
+									
+									case(sortBy.options[1]): {
+										return data.cardsPaginated.map((cardData) => {
+											console.log(cardData);
+											return <Card key={cardData._id} cardData={cardData} />
+										}).reverse()
+									}
+										
+									default: {
+										console.log(data);
+										return data.cardsPaginated.map((cardData) => {
+											console.log(cardData);
+											return <Card key={cardData._id} cardData={cardData} />
+										}).reverse()
+									}
+								}
+							})()
 						}
-					})()
+					</div>
 				}
-			</div>
-			<Footer />
-		</Styled.Wrapper>
-	)
+
+				{(data && data.cardsPaginated && data.cardsPaginated.length < cardLimit) ?
+					<Styled.FetchCat onClick={loadFromStart}>Back to Start</Styled.FetchCat>
+				:
+					<Styled.FetchCat onClick={loadMoreCards}>Load more</Styled.FetchCat>
+				}
+				<Footer />
+			</Styled.Wrapper>
+		}
+	</>)
 
 	
 }

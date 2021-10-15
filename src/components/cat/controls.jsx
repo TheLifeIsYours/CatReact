@@ -93,11 +93,3 @@ export const Controls = ({id}) => {
         </Styled.Controls>
     );
 }
-
-const controlStyle = {
-    display: 'flex',
-    flexFlow: 'row',
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-    width: '20em'
-}

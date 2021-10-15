@@ -29,7 +29,7 @@ const getRandomButtonValue = () => (buttonValues[Math.floor(Math.random() * butt
 
 const FetchCat = () => {
    
-	//State handling
+    const [isLoading, setIsLoading] = React.useState(false);
 	const [cardList, setCardList] = useRecoilState(cardListState);
     const [addCard] = useMutation(ADD_CARD);
     
@@ -50,10 +50,17 @@ const FetchCat = () => {
                 const newCard = <Card key={data._id} cardData={data} />
     
                 setCardList([newCard, ...cardList]);
+                
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 700);
+
             }).catch(console.error)
     }
 
 	const fetchCat = async () => {
+        setIsLoading(true);
+
         let urlExists = false;
 
 		let catUrl = await getCatUrl();
@@ -75,11 +82,15 @@ const FetchCat = () => {
         }
     }
 
-    return (
+    return (<>
         <Styled.FetchCat onClick={() => {fetchCat()}} >
             <Button value={getRandomButtonValue()} />
         </Styled.FetchCat>
-    )
+
+        <Styled.LoadingImage loading={isLoading}>
+            <img src={`${process.env.PUBLIC_URL}/images/emoticon-cat.png`} alt=""/>
+        </Styled.LoadingImage>
+    </>)
 }
 
 export default FetchCat
