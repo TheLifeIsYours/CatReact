@@ -111,7 +111,7 @@ function App() {
 										return data.cardsPaginated.map((cardData) => {
 											console.log(cardData);
 											return <Card key={cardData._id} cardData={cardData} />
-										}).reverse()
+										})
 									}
 								}
 							})()

@@ -10,16 +10,18 @@ import { cardListState } from './cardState';
 import Styled from '../../styled/exports'
 
 const ADD_CARD = gql`
-mutation AddCard($url: String!) {
+mutation AddCard($url: String!, $timestamp: DateTime!) {
 	insertOneCard(
 		data: {
 			url: $url,
-			points: 0
+			points: 0,
+            timestamp: $timestamp,
 		}
 	) {
 		_id
 		url
 		points
+        timestamp
 	}
 }`;
     
@@ -43,7 +45,7 @@ const FetchCat = () => {
     }
 
     const addCatToDb = (url) => {
-        addCard({variables: {url: url}})
+        addCard({variables: {url: url, timestamp: new Date()}})
             .then((response) => {
                 const data = response.data.insertOneCard;
     
